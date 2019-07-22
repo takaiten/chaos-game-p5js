@@ -6,7 +6,7 @@ class ChaosGame {
         this.createVertices(nOfPoints);
         this.createColors(nOfPoints);
 
-        this.renewPoints();
+        this.reset();
     }
 
     createVertices(n, radius = height / 3) {
@@ -32,24 +32,24 @@ class ChaosGame {
         }
     }
 
-    renewPoints() {
+    reset() {
         this.seed = createVector(random(0, width), random(0, height));
         this.points = [];
         this.pColors = [];
     }
 
-    addVertex(radius = height / 3) {
+    addVertex() {
         this.createVertices(this.vertices.length + 1);
-        this.renewPoints();
+        this.reset();
 
         this.colors.push(color(random(0, 255), random(0, 255), random(0, 255)));
     }
 
-    removeVertex(radius = height / 3) {
+    removeVertex() {
         if (this.vertices.length < 4)
             return;
         this.createVertices(this.vertices.length - 1);
-        this.renewPoints();
+        this.reset();
 
         this.colors.pop();
     }
@@ -62,7 +62,7 @@ class ChaosGame {
                 .add(this.origin);
         }
 
-        this.renewPoints();
+        this.reset();
     }
 
     show() {
@@ -80,13 +80,20 @@ class ChaosGame {
     playN(n) {
         if (this.points.length > this.max)
             return;
-        let c = 0.5;
 
+        let percent = 0.5;
+        // let prev = 0;
         for (let i = 0; i < n; i++) {
             let rand = int(random(0, this.vertices.length));
-            this.seed.lerp(this.vertices[rand], c);
+            // /// test rule
+            // if (rand === prev) {
+            //     prev = rand;
+            //     continue;
+            // }
+            this.seed.lerp(this.vertices[rand], percent);
             this.points.push(this.seed.copy());
             this.pColors.push(this.colors[rand]);
+            // prev = rand;
         }
     }
 
