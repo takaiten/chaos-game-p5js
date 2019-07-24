@@ -52,6 +52,9 @@ function setup() {
             .size(AUTO, btnSize))
         .child(createButton('Reset')
             .mousePressed(resetFunc)
+            .size(AUTO, btnSize))
+        .child(createButton('Save as image')
+            .mousePressed(saveImageFunc)
             .size(AUTO, btnSize));
 
     let npInpX = nPointsInp.position().x,
@@ -123,4 +126,8 @@ function perDrawSetFunc() {
     game.setPointsPerDraw(perDrawInp.value());
     if (!isPlay)
         redraw();
+}
+
+function saveImageFunc() {
+    saveCanvas('Chaos-Game', 'png');
 }
