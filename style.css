@@ -1,25 +1,46 @@
 * {
-  font-family: 'Asap', Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
 }
+
 html, body {
   margin: 0;
   padding: 0;
-  background-color: gainsboro;
+  background-color: darkgrey;
+  overflow: hidden;
+
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
+
+input {
+  margin: 0  auto;
+  background-color: gainsboro;
+  outline: none;
+  border: none;
+}
+
+input:hover{
+  background-color: white;
+  padding: auto;
+}
+
 button {
-  font-size: 20px;
+  margin: 2px 3px;
   color: white;
   background-color: limegreen;
-  border-radius: 2px;
+  border-radius: 5px;
   outline: none;
   border: none;
 }
 button:hover {
   background-color: #30be30;
 }
-text {
-  color: aliceblue;
+button:active {
+  background-color: #2aaf2a;
 }
+
 canvas {
   display: block;
 }

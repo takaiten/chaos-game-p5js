@@ -1,4 +1,5 @@
 let nPointsInp, maxNInp, perDrawInp;
+let playStopBtn;
 let game;
 
 function setup() {
@@ -18,9 +19,12 @@ function setup() {
     nPointsInp = createInput('0');
     maxNInp = createInput(game.getMaxNumOfPoints());
     perDrawInp = createInput(game.getPointsPerDraw());
+    playStopBtn = createButton('Play/Stop')
+        .mousePressed(playStopFunc)
+        .style('background-color', 'limegreen');
 
-    const btnSize = state? height/20 : height/15;
-    createP()
+    const btnSize = state? height/20 : height/12;
+    createDiv()
         .position(state? width : 0, state? 0 : height)
         .child(createDiv('Vertices: ')
             .child(createButton('-')
@@ -44,13 +48,21 @@ function setup() {
             .child(createButton('Save')
                 .mousePressed(perDrawSetFunc)
                 .size(AUTO, btnSize)))
-        .child(createButton('Play/Stop')
-            .mousePressed(playStopFunc)
-            .size(AUTO, btnSize)
-            .style('background-color', 'brown'))
+        .child(playStopBtn
+            .size(AUTO, btnSize))
         .child(createButton('Reset')
             .mousePressed(resetFunc)
             .size(AUTO, btnSize));
+
+    let npInpX = nPointsInp.position().x,
+        pDInpX = perDrawInp.position().x,
+        mxnInpX = maxNInp.position().x;
+    let maxX = max(npInpX, pDInpX);
+    maxX = max(maxX, mxnInpX);
+
+    nPointsInp.size(size/3 + maxX - npInpX, AUTO);
+    maxNInp.size(size/3 + maxX - mxnInpX, AUTO);
+    perDrawInp.size(size/3 + maxX - pDInpX, AUTO);
 
     noLoop();
 }
@@ -58,7 +70,7 @@ function setup() {
 let isPlay = false;
 
 function draw() {
-    background(220);
+    background(169);
 
     if (isPlay)
         game.play();
@@ -80,6 +92,7 @@ function resetFunc() {
 function playStopFunc() {
     isPlay = !isPlay;
     isPlay ? loop() : noLoop();
+    isPlay ? playStopBtn.style('background-color', 'firebrick') : playStopBtn.style('background-color', 'limegreen');
 }
 
 function minusVertFunc() {
