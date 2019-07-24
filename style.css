@@ -1,6 +1,24 @@
+* {
+  font-family: 'Asap', Helvetica, Arial, sans-serif;
+}
 html, body {
   margin: 0;
   padding: 0;
+  background-color: gainsboro;
+}
+button {
+  font-size: 20px;
+  color: white;
+  background-color: limegreen;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+}
+button:hover {
+  background-color: #30be30;
+}
+text {
+  color: aliceblue;
 }
 canvas {
   display: block;

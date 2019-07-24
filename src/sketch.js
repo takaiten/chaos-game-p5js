@@ -12,7 +12,7 @@ function setup() {
     }
     createCanvas(size, size);
 
-    game = new ChaosGame(3, 3000);
+    game = new ChaosGame(3, 3000, 20000);
     game.rotate(radians(30));
 
     nPointsInp = createInput('0');
@@ -44,11 +44,12 @@ function setup() {
             .child(createButton('Save')
                 .mousePressed(perDrawSetFunc)
                 .size(AUTO, btnSize)))
-        .child(createButton('Reset')
-            .mousePressed(resetFunc)
-            .size(AUTO, btnSize))
         .child(createButton('Play/Stop')
             .mousePressed(playStopFunc)
+            .size(AUTO, btnSize)
+            .style('background-color', 'brown'))
+        .child(createButton('Reset')
+            .mousePressed(resetFunc)
             .size(AUTO, btnSize));
 
     noLoop();
@@ -57,7 +58,7 @@ function setup() {
 let isPlay = false;
 
 function draw() {
-    background(0);
+    background(220);
 
     if (isPlay)
         game.play();
@@ -65,7 +66,7 @@ function draw() {
     game.show();
 
     /* Info */
-    fill(255);
+    fill(0);
     text('N: ' + game.getNumOfPoints(), 0, 10);
     text('Vertices: ' + game.getNumOfVertices(), 0, 25);
 }
