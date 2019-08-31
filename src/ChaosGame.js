@@ -1,29 +1,30 @@
 class ChaosGame {
-    constructor(nOfPoints = 3, samplesPerCall = 1000, maxPointsCount = 50000) {
+    constructor(nOfPoints = 3, samplesPerCall = 1000, maxPointsCount = 50000, radius = height / 3, X = width/2, Y = height/2) {
         this.max = maxPointsCount;
-        this.origin = createVector(width / 2, height / 2); // Origin of game
+        this.origin = createVector(X, Y); // Origin of the game
         this.samples = samplesPerCall; // Set number of points generated per call of 'play'
+        this.radius = radius;
         this.createVertices(nOfPoints);
         this.createColors(nOfPoints);
 
         this.reset();
     }
 
-    createVertices(n, radius = height / 3) {
+    createVertices(n) {
         this.vertices = new Array(n);
 
         const step = TWO_PI / n;
         for (let i = 0; i < n; i++) {
             this.vertices[i] = p5.Vector
                 .fromAngle(step * i)
-                .mult(radius)
+                .mult(this.radius)
                 .add(this.origin);
         }
     }
 
     createColors(n) {
         this.colors = new Array(n);
-        /* First three colors are RGB, next are random */
+        // First three colors are RGB, next are random
         this.colors[0] = color(255, 0, 0);
         this.colors[1] = color(0, 255, 0);
         this.colors[2] = color(0, 0, 255);
@@ -66,11 +67,13 @@ class ChaosGame {
     }
 
     show() {
+        // Draw points
         for (let i = 0; i < this.points.length; i++) {
             stroke(this.pColors[i]);
             point(this.points[i].x, this.points[i].y);
         }
         noStroke();
+        // Draw vertices
         for (let i = 0; i < this.vertices.length; i++) {
             fill(this.colors[i]);
             ellipse(this.vertices[i].x, this.vertices[i].y, 7);
