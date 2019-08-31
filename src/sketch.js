@@ -7,33 +7,34 @@ function setup() {
         newWidth = 2 * h / 3;
     createCanvas(w > newWidth ? newWidth + 20 : w, h);
 
-    game = new ChaosGame(3, 3000, 20000, width/2 - 20);
+    game = new ChaosGame(3, 3000, 20000);
     game.rotate(radians(30));
 
     playStopBtn = createButton('Play/Stop')
         .mousePressed(playStopFunc)
         .style('background-color', 'limegreen');
 
-    const btnSize = min(height/20, width / 15);
+    const btnHeight = min(height, width)/20,
+        btnWidth = width / 4;
     createDiv()
-        .position(0, btnSize)
+        .position(0, btnHeight)
         .child(createDiv('Vertices: ')
             .child(createButton('-')
                 .mousePressed(minusVertFunc)
-                .size(btnSize, btnSize))
+                .size(btnHeight, btnHeight))
             .child(createButton('+')
                 .mousePressed(plusVertFunc)
-                .size(btnSize, btnSize)));
+                .size(btnHeight, btnHeight)));
     createDiv()
-        .position(width/14, height - btnSize * 2)
+        .position(width/8 - 8, height - btnHeight * 2)
         .child(playStopBtn
-            .size(AUTO, btnSize))
+            .size(btnWidth, btnHeight))
         .child(createButton('Reset')
             .mousePressed(resetFunc)
-            .size(AUTO, btnSize))
+            .size(btnWidth, btnHeight))
         .child(createButton('Save as image')
             .mousePressed(saveImageFunc)
-            .size(AUTO, btnSize));
+            .size(btnWidth, btnHeight));
 
     noLoop();
 }

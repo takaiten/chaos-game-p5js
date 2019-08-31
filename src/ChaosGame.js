@@ -1,5 +1,5 @@
 class ChaosGame {
-    constructor(nOfPoints = 3, samplesPerCall = 1000, maxPointsCount = 50000, radius = height / 3, X = width/2, Y = height/2) {
+    constructor(nOfPoints = 3, samplesPerCall = 1000, maxPointsCount = 50000, radius = width/2 - 20, X = width/2, Y = height/2) {
         this.max = maxPointsCount;
         this.origin = createVector(X, Y); // Origin of the game
         this.samples = samplesPerCall; // Set number of points generated per call of 'play'
