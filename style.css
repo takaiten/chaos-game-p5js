@@ -1,7 +1,6 @@
 * {
   font-family: sans-serif;
-  font-size: 18px;
-  color: white;
+  font-size: 14px;
 }
 
 html, body {
@@ -13,34 +12,4 @@ html, body {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-}
-
-/*input {*/
-/*  margin: 0  auto;*/
-/*  background-color: gainsboro;*/
-/*  outline: none;*/
-/*  border: none;*/
-/*}*/
-/*input:hover{*/
-/*  background-color: white;*/
-/*  padding: auto;*/
-/*}*/
-
-button {
-  margin: 2px 3px;
-  background-color: limegreen;
-  border-radius: 5px;
-  outline: none;
-  border: none;
-  text-shadow: #000 -1px 0px 3px;
-}
-button:hover {
-  background-color: #30be30;
-}
-button:active {
-  background-color: #2aaf2a;
-}
-
-canvas {
-  display: block;
 }

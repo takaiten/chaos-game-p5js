@@ -1,101 +1,89 @@
+var isPlaying = true;
+var flushScreen = false;
 let game;
-let playStopBtn;
+let gui;
 
+/**
+ * P5.js setup function  
+ */
 function setup() {
-    const w = window.innerWidth,
-        h = window.innerHeight,
-        newWidth = 2 * h / 3;
-    createCanvas(w > newWidth ? newWidth + 20 : w, h);
+    createCanvas(window.innerWidth, window.innerHeight);
 
-    game = new ChaosGame(3, 3000, 20000);
-    game.rotate(radians(30));
+    game = new ChaosGame({
+        dimensions: createVector(width, height),
+        radius: min(width, height) / 2 - 25,
+        lerpPercent: 0.5,
+        initialVerticesCount: 4,
+        samplesPerDraw: 3000,
+    });
+    game.rotation = PI / 3;
 
-    playStopBtn = createButton('Play/Stop')
-        .mousePressed(playStopFunc)
-        .style('background-color', 'limegreen');
+    createGUI();
 
-    const btnHeight = min(height, width)/20,
-        btnWidth = width / 4;
-    createDiv()
-        .position(0, btnHeight)
-        .child(createDiv('Vertices: ')
-            .child(createButton('-')
-                .mousePressed(minusVertFunc)
-                .size(btnHeight, btnHeight))
-            .child(createButton('+')
-                .mousePressed(plusVertFunc)
-                .size(btnHeight, btnHeight)));
-    createDiv()
-        .position(width/8 - 8, height - btnHeight * 2)
-        .child(playStopBtn
-            .size(btnWidth, btnHeight))
-        .child(createButton('Reset')
-            .mousePressed(resetFunc)
-            .size(btnWidth, btnHeight))
-        .child(createButton('Save as image')
-            .mousePressed(saveImageFunc)
-            .size(btnWidth, btnHeight));
-
-    noLoop();
+    background(20);
 }
 
-let isPlay = false;
 
+/**
+ * P5.js draw function 
+ */
 function draw() {
-    background(10);
-
-    if (isPlay)
-        game.play();
-
-    game.show();
-
-    /* Info */
-    fill(210);
-    text('N: ' + game.getNumOfPoints(), 0, 10);
-    text('Vertices: ' + game.getNumOfVertices(), 0, 25);
+    if (flushScreen) background(20);
+    game.play();
+    game.rotate();
+    game.showVertices();
 }
 
-function playStopFunc() {
-    isPlay = !isPlay;
-    isPlay ? loop() : noLoop();
-    isPlay ? playStopBtn.style('background-color', 'firebrick') : playStopBtn.style('background-color', 'limegreen');
-}
+/**
+ * Helper functions 
+ */
+const updateVertices = (value) => {
+    game.updateVertices(value);
+    if (!isPlaying) redraw();
+};
 
-function ifNotPlayRedraw() {
-    if (!isPlay)
-        redraw();
-}
-
-function resetFunc() {
+function resetGame() {
     game.reset();
-    ifNotPlayRedraw();
-}
+    if (!isPlaying) redraw();
+};
 
-function minusVertFunc() {
-    game.removeVertex();
-    ifNotPlayRedraw();
-}
-
-function plusVertFunc() {
-    game.addVertex();
-    ifNotPlayRedraw();
-}
-
-function placePointFunc() {
-    game.playN(nPointsInp.value());
-    ifNotPlayRedraw();
-}
-
-function setMaxPointsFunc() {
-    game.setMaxNumOfPoints(maxNInp.value());
-    ifNotPlayRedraw();
-}
-
-function perDrawSetFunc() {
-    game.setPointsPerDraw(perDrawInp.value());
-    ifNotPlayRedraw();
-}
-
-function saveImageFunc() {
+function saveCanvasPng() {
     saveCanvas('ChaosGame', 'png');
+};
+
+function createGUI() {
+    gui = new dat.GUI();
+
+    const paramsFolder = gui.addFolder('Params');
+    paramsFolder.open();
+    paramsFolder.add(game, 'lerpPercent', 0, 1).name('lerp');
+    paramsFolder.add(game, 'samples', 0, 10000, 1);
+
+    const verticesFolder = gui.addFolder('vertices');
+    verticesFolder.open();
+    verticesFolder
+        .add(game.vertices, 'length', 2, 9, 1)
+        .name('Vertices')
+        .onFinishChange(updateVertices);
+
+    const controlFolder = gui.addFolder('Control');
+    controlFolder.open();
+    controlFolder.add(game, 'rotation', {
+        'stop': 0,
+        'PI/3': PI/3, 
+        'PI/2': PI/2, 
+        'PI/4': PI/4, 
+        'PI/6': PI/6, 
+        'PI/8': PI/8, 
+        'PI/12': PI/12, 
+    }).onFinishChange(() => game.reset());
+    controlFolder
+        .add(window, 'isPlaying')
+        .name('running?')
+        .onFinishChange(value => value ? loop() : noLoop());
+    controlFolder
+        .add(window, 'flushScreen')
+        .name('flush?');
+    controlFolder.add(window, 'resetGame').name('reset');
+    controlFolder.add(window, 'saveCanvasPng').name('save');
 }
