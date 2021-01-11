@@ -58,25 +58,22 @@ function createGUI() {
     paramsFolder.open();
     paramsFolder.add(game, 'lerpPercent', 0, 1).name('lerp');
     paramsFolder.add(game, 'samples', 0, 10000, 1);
-
-    const verticesFolder = gui.addFolder('vertices');
-    verticesFolder.open();
-    verticesFolder
+    paramsFolder
         .add(game.vertices, 'length', 2, 9, 1)
-        .name('Vertices')
+        .name('vertices')
         .onFinishChange(updateVertices);
+    paramsFolder.add(game, 'rotation', {
+            'none': 0,
+            'PI/3': PI/3, 
+            'PI/2': PI/2, 
+            'PI/4': PI/4, 
+            'PI/6': PI/6, 
+            'PI/8': PI/8, 
+            'PI/12': PI/12, 
+    }).onFinishChange(() => game.reset());
 
     const controlFolder = gui.addFolder('Control');
     controlFolder.open();
-    controlFolder.add(game, 'rotation', {
-        'stop': 0,
-        'PI/3': PI/3, 
-        'PI/2': PI/2, 
-        'PI/4': PI/4, 
-        'PI/6': PI/6, 
-        'PI/8': PI/8, 
-        'PI/12': PI/12, 
-    }).onFinishChange(() => game.reset());
     controlFolder
         .add(window, 'isPlaying')
         .name('running?')
